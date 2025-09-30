@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cipher Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Cipher Tool</h1>
+            <p>Encrypt and decrypt messages using various classical ciphers</p>
+        </div>
+
+        <!-- Main Selection Page -->
+        <div id="home-page">
+            <div class="cipher-grid">
+                <div class="cipher-card" onclick="showCipher('caesar')">
+                    <h3>Caesar Cipher</h3>
+                    <p>A substitution cipher where each letter is shifted by a fixed number of positions in the alphabet. Simple but historically significant.</p>
+                </div>
+                
+                <div class="cipher-card" onclick="showCipher('rot13')">
+                    <h3>ROT13</h3>
+                    <p>A special case of Caesar cipher with a shift of 13. Commonly used for hiding spoilers and simple text obfuscation.</p>
+                </div>
+                
+                <div class="cipher-card" onclick="showCipher('vigenere')">
+                    <h3>Vigenère Cipher</h3>
+                    <p>A polyalphabetic substitution cipher using a keyword to determine the shift for each letter. More secure than Caesar cipher.</p>
+                </div>
+                
+                <div class="cipher-card" onclick="showCipher('atbash')">
+                    <h3>Atbash Cipher</h3>
+                    <p>An ancient Hebrew cipher that replaces each letter with its counterpart from the reversed alphabet (A↔Z, B↔Y, etc.).</p>
+                </div>
+                
+                <div class="cipher-card" onclick="showCipher('monoalphabetic')">
+                    <h3>Monoalphabetic Substitution</h3>
+                    <p>Each letter of the alphabet is replaced by another letter according to a fixed substitution key.</p>
+                </div>
+                
+                <div class="cipher-card" onclick="showCipher('transposition')">
+                    <h3>Transposition Cipher</h3>
+                    <p>Rearranges the letters of the plaintext according to a specific pattern or key, without changing the letters themselves.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Caesar Cipher Page -->
+        <div id="caesar-page" class="cipher-page">
+            <button class="back-btn" onclick="showHome()">← Back to Main</button>
+            <h2>Caesar Cipher</h2>
+            <div class="cipher-controls">
+                <div class="control-group">
+                    <label for="caesar-input">Input Text:</label>
+                    <textarea id="caesar-input" placeholder="Enter your message here..."></textarea>
+                </div>
+                <div class="control-group">
+                    <label for="caesar-output">Output Text:</label>
+                    <textarea id="caesar-output" readonly placeholder="Result will appear here..."></textarea>
+                </div>
+            </div>
+            <div class="control-group" style="max-width: 200px; margin: 0 auto 20px;">
+                <label for="caesar-shift">Shift Value (0-25):</label>
+                <input type="number" id="caesar-shift" min="0" max="25" value="3">
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="caesarEncrypt()">Encrypt</button>
+                <button class="action-btn decrypt" onclick="caesarDecrypt()">Decrypt</button>
+            </div>
+        </div>
+
+        <!-- ROT13 Page -->
+        <div id="rot13-page" class="cipher-page">
+            <button class="back-btn" onclick="showHome()">← Back to Main</button>
+            <h2>ROT13 Cipher</h2>
+            <div class="cipher-controls">
+                <div class="control-group">
+                    <label for="rot13-input">Input Text:</label>
+                    <textarea id="rot13-input" placeholder="Enter your message here..."></textarea>
+                </div>
+                <div class="control-group">
+                    <label for="rot13-output">Output Text:</label>
+                    <textarea id="rot13-output" readonly placeholder="Result will appear here..."></textarea>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="rot13Transform()">Transform (Encrypt/Decrypt)</button>
+            </div>
+        </div>
+
+        <!-- Vigenère Page -->
+        <div id="vigenere-page" class="cipher-page">
+            <button class="back-btn" onclick="showHome()">← Back to Main</button>
+            <h2>Vigenère Cipher</h2>
+            <div class="cipher-controls">
+                <div class="control-group">
+                    <label for="vigenere-input">Input Text:</label>
+                    <textarea id="vigenere-input" placeholder="Enter your message here..."></textarea>
+                </div>
+                <div class="control-group">
+                    <label for="vigenere-output">Output Text:</label>
+                    <textarea id="vigenere-output" readonly placeholder="Result will appear here..."></textarea>
+                </div>
+            </div>
+            <div class="control-group" style="max-width: 300px; margin: 0 auto 20px;">
+                <label for="vigenere-key">Keyword:</label>
+                <input type="text" id="vigenere-key" placeholder="Enter keyword (letters only)">
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="vigenereEncrypt()">Encrypt</button>
+                <button class="action-btn decrypt" onclick="vigenereDecrypt()">Decrypt</button>
+            </div>
+        </div>
+
+        <!-- Atbash Page -->
+        <div id="atbash-page" class="cipher-page">
+            <button class="back-btn" onclick="showHome()">← Back to Main</button>
+            <h2>Atbash Cipher</h2>
+            <div class="cipher-controls">
+                <div class="control-group">
+                    <label for="atbash-input">Input Text:</label>
+                    <textarea id="atbash-input" placeholder="Enter your message here..."></textarea>
+                </div>
+                <div class="control-group">
+                    <label for="atbash-output">Output Text:</label>
+                    <textarea id="atbash-output" readonly placeholder="Result will appear here..."></textarea>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="atbashTransform()">Transform (Encrypt/Decrypt)</button>
+            </div>
+        </div>
+
+        <!-- Monoalphabetic Page -->
+        <div id="monoalphabetic-page" class="cipher-page">
+            <button class="back-btn" onclick="showHome()">← Back to Main</button>
+            <h2>Monoalphabetic Substitution Cipher</h2>
+            <div class="cipher-controls">
+                <div class="control-group">
+                    <label for="mono-input">Input Text:</label>
+                    <textarea id="mono-input" placeholder="Enter your message here..."></textarea>
+                </div>
+                <div class="control-group">
+                    <label for="mono-output">Output Text:</label>
+                    <textarea id="mono-output" readonly placeholder="Result will appear here..."></textarea>
+                </div>
+            </div>
+            <div class="control-group" style="max-width: 400px; margin: 0 auto 20px;">
+                <label for="mono-key">Substitution Key (26 unique letters):</label>
+                <input type="text" id="mono-key" placeholder="ZYXWVUTSRQPONMLKJIHGFEDCBA" maxlength="26">
+                <small style="color: #666; margin-top: 5px;">Example: ZYXWVUTSRQPONMLKJIHGFEDCBA (reverse alphabet)</small>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="monoEncrypt()">Encrypt</button>
+                <button class="action-btn decrypt" onclick="monoDecrypt()">Decrypt</button>
+            </div>
+        </div>
+
+        <!-- Transposition Page -->
+        <div id="transposition-page" class="cipher-page">
+            <button class="back-btn" onclick="showHome()">← Back to Main</button>
+            <h2>Transposition Cipher (Columnar)</h2>
+            <div class="cipher-controls">
+                <div class="control-group">
+                    <label for="trans-input">Input Text:</label>
+                    <textarea id="trans-input" placeholder="Enter your message here..."></textarea>
+                </div>
+                <div class="control-group">
+                    <label for="trans-output">Output Text:</label>
+                    <textarea id="trans-output" readonly placeholder="Result will appear here..."></textarea>
+                </div>
+            </div>
+            <div class="control-group" style="max-width: 300px; margin: 0 auto 20px;">
+                <label for="trans-key">Key (letters for column order):</label>
+                <input type="text" id="trans-key" placeholder="KEYWORD">
+                <small style="color: #666; margin-top: 5px;">Example: KEYWORD creates columns ordered by alphabetical position</small>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="transpositionEncrypt()">Encrypt</button>
+                <button class="action-btn decrypt" onclick="transpositionDecrypt()">Decrypt</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Created by Jayent Dev (24B1232)</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
